@@ -6,13 +6,13 @@ branding:
 inputs:
   owner:
     description: 'The Github user or organization that owns the repository'
-    required: false
+    required: true
   repo:
     description: 'The repository name'
-    required: false
-  repository:
-    description: 'The repository name in full'
-    required: false
+    required: true
+  token:
+    description: 'Github Token'
+    required: true
 outputs:
   release:
     description: 'Latest release'

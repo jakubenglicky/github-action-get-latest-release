@@ -14,18 +14,13 @@ Name | Description | Example
 --- | --- | ---
 owner | The Github user or organization that owns the repository |  pozetroninc
 repo | The repository name | github-action-get-latest-release
-
-**or**
-Name | Description | Example
---- | --- | ---
-repository | The repository name in full | pozetroninc/github-action-get-latest-release
-
+token | Github Personal Token | ***
 
 **Outputs**
 
 Name | Description | Example
 --- | --- | ---
-release | The latest release version tag | v0.3.0
+release | The new release version tag | v20.08.04.2
 
 Usage Example
 =============
@@ -39,22 +34,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - id: keydb
-        uses: pozetroninc/github-action-get-latest-release@master
+        uses: jakubenglicky/github-action-get-latest-release@master
         with:
             owner: JohnSully
             repo: KeyDB
-      - id: timeseries
-        uses: pozetroninc/github-action-get-latest-release@master
-        with:
-            repository: RedisTimeSeries/RedisTimeSeries
+            token: ${{ secrets.GITHUB_TOKEN }}
       - uses: actions/checkout@v2
-      - uses: docker/build-push-action@v1
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-          repository: pozetroninc/keydb-timeseries
-          dockerfile: timeseries.dockerfile
-          build_args: KEY_DB_VERSION=${{ steps.keydb.outputs.release }}, REDIS_TIME_SERIES_VERSION=${{ steps.timeseries.outputs.release }}
-          tags: latest, ${{ steps.keydb.outputs.release }}_${{ steps.timeseries.outputs.release }}
-
+        run: echo ${{ steps.keydb.outputs.release }}
 ```
