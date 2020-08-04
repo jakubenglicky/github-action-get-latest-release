@@ -4,8 +4,11 @@ const { Octokit } = require("@octokit/rest");
 const repository = core.getInput('repository');
 var owner = core.getInput('owner');
 var repo = core.getInput('repo');
+var token = core.getInput('token');
 
-const octokit = new Octokit()
+const octokit = new Octokit({
+    auth: token,
+})
 
 async function run() {
     try {
