@@ -19,7 +19,7 @@ async function run() {
             owner: owner,
             repo: repo,
             });
-        core.setOutput('release', releases.data[0].tag_name)
+        core.setOutput('release', getNextVersion(releases.data[0].tag_name))
         }
     catch (error) {
         core.setFailed(error.message);
@@ -27,3 +27,23 @@ async function run() {
     }
 
 run()
+
+
+function getNextVersion(currentVersion) {
+    var d = new Date();
+
+    var version = '';
+    version += 'v' + d.getFullYear().toString().substr(-2);
+    version += '.' + ('0' + (d.getMonth() + 1)).substr(-2);
+    version += '.' + ('0' + (d.getDate())).substr(-2);
+
+    var i = currentVersion.lastIndexOf('.');
+    var currentVersionDate = currentVersion.substr(0, i);
+    var currentVersionVersion = parseInt(currentVersion.substr(i + 1));
+
+    if (version === currentVersionDate) {
+        return version + '.' + (currentVersionVersion + 1);
+    } else {
+        return version + '.1';
+    }
+}
